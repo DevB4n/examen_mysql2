@@ -63,3 +63,49 @@ BEGIN
 
     RETURN salario_promedio;
 END//
+DELIMITER ;
+SELECT  fn_salario_promedio_sucursal(4);
+
+
+--4. Crea una función llamada `fn_municipio_por_nombre_cliente(nombre_cliente VARCHAR)` que retorne el nombre del municipio del cliente según su nombre (puede haber duplicados).
+DELIMITER //
+DROP FUNCTION IF EXISTS fn_municipio_por_nombre_cliente //
+CREATE FUNCTION IF NOT EXISTS fn_municipio_por_nombre_cliente(nombre_cliente VARCHAR)
+DETERMINISTIC
+READS SQL DATA
+RETURNS VARCHAR(100)
+BEGIN
+    DECLARE municipio VARCHAR(100);
+    SET municipio =
+    SELECT DISTINCT municipio.nombre
+    FROM clientes
+    JOIN municipio ON clientes.municipioid = municipio.id 
+    WHERE clientes.nombre  = nombre_cliente;
+
+    RETURN municipio;
+END //
+
+DELIMITER ;
+SELECT  fn_municipio_por_nombre_cliente("Daniela García")
+
+--5. Crea una función llamada `fn_departamento_por_municipio(municipio_id INT)` que retorne el nombre del departamento asociado.
+
+DELIMITER //
+DROP FUNCTION IF EXISTS fn_departamento_por_municipio //
+CREATE FUNCTION IF NOT EXISTS fn_departamento_por_municipio(municipio_id INT)
+DETERMINISTIC
+READS SQL DATA
+RETURNS VARCHAR(100)
+BEGIN
+    DECLARE nombre_departamento =
+    SELECT departamento.nombre 
+    FROM municipio
+    JOIN departamento ON municipio.depid = departamento.id
+    WHERE municipio.id = municipio_id;
+
+    RETURN nombre_departamento;
+END//
+
+DELIMITER ;
+
+SELECT fn_departamento_por_municipio(4);
