@@ -26,7 +26,7 @@ DELIMITER;
 
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS  ps_obtener_clientes_por_municipio
+DROP PROCEDURE IF  EXISTS  ps_obtener_clientes_por_municipio
 CREATE PROCEDURE  IF NOT EXISTS ps_obtener_clientes_por_municipio(IN municipio VARCHAR,OUT cliente_id ,OUT nombre,OUT email)
 BEGIN
 
